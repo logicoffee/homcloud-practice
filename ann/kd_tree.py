@@ -1,5 +1,4 @@
-from numpy import array, random, concatenate
-from math import ceil
+from numpy import concatenate
 from quick_select import quick_select
 
 
@@ -22,6 +21,7 @@ def kdtree(pointList, depth=0):
 
     node = Node()
     node.location = middle[0]
+    node.axis = axis
     node.leftChild = kdtree(left, depth+1)
     node.rightChild = kdtree(right, depth+1)
     return node
