@@ -1,4 +1,4 @@
-from approximation import approximate
+from approximate import approximate
 from matplotlib.pyplot import plot, show
 from numpy import random, array, reshape
 
