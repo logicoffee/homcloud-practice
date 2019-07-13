@@ -7,7 +7,7 @@ class Node:
         return str(self.location) + ': [\n\t' + repr(self.leftChild) + '\n\t' + repr(self.rightChild) + '\n]'
 
 
-def kdtree(pointList, depth=0):
+def kd_tree(pointList, depth=0):
     if len(pointList) == 0:
         return
 
@@ -22,6 +22,6 @@ def kdtree(pointList, depth=0):
     node = Node()
     node.location = middle[0]
     node.axis = axis
-    node.leftChild = kdtree(left, depth+1)
-    node.rightChild = kdtree(right, depth+1)
+    node.leftChild = kd_tree(left, depth+1)
+    node.rightChild = kd_tree(right, depth+1)
     return node
