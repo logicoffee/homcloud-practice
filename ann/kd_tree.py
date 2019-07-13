@@ -1,5 +1,5 @@
 from numpy import concatenate
-from quick_select import quick_select
+from .quick_select import quick_select
 
 
 class Node:
