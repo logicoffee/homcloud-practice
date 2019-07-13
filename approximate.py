@@ -2,24 +2,7 @@
 # というエラーが出たら
 # brew install libomp
 from faiss import IndexFlatL2
-from numpy import random, array, apply_along_axis
-
-
-def count_neighbors(arr, r):
-    """
-    r 以下の要素がいくつあるかを数える. ただし arr は単調増加
-
-    Parameters
-    ---------
-    arr : ndarray of float32
-    r : float
-    """
-    count = 0
-    for elm in arr:
-        if elm > r:
-            return count
-        count += 1
-    return count
+from numpy import array
 
 
 def approximate(pc, r):
@@ -42,5 +25,5 @@ def approximate(pc, r):
     size = len(pc)
     index = IndexFlatL2(1)
     index.add(pc)
-    D = index.search(pc, size)[0]
-    return apply_along_axis(count_neighbors, 1, D, r) / (size * 2 * r)
+    lim = index.range_search(pc, r)[0]
+    return array([lim[i+1] - lim[i] for i in range(size)]) / (size * 2 * r)
