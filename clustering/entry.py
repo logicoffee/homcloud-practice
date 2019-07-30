@@ -22,7 +22,7 @@ class Entry:
 
 class Entries:
     def __init__(self):
-        self.entries = empty(0)
+        self.entries = empty(0, dtype=Entry)
 
     def find_entry_index_by_point(self, point_index):
         for index, entry in enumerate(self.entries):
