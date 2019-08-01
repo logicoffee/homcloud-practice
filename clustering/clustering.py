@@ -4,15 +4,7 @@ from .approximate import approximate
 from .entry import Entry, Entries
 
 
-def clustering(point_cloud, delta, tau):
-    f = approximate(point_cloud, 0.1)
-
-    # f の値が大きい順に point_cloud と f をソート
-    z = column_stack((point_cloud, f))
-    z = array(sorted(z, key=lambda x: x[-1], reverse=True))
-    point_cloud = z[:, :-1]
-    f = z[:, -1]
-
+def clustering(point_cloud, f, delta, tau):
     index = IndexFlatL2(len(point_cloud[0]))
     point_cloud = point_cloud.astype('float32')
     index.add(point_cloud)
