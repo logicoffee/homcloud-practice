@@ -21,9 +21,9 @@ def approximate(pc, r):
     approximated_values : ndarray of float32
         Point Cloud の各点における近似関数の値
     """
-
+    pc = pc.astype('float32')
     size = len(pc)
-    index = IndexFlatL2(1)
+    index = IndexFlatL2(len(pc[0]))
     index.add(pc)
     lim = index.range_search(pc, r)[0]
     return array([lim[i+1] - lim[i] for i in range(size)]) / (size * 2 * r)
