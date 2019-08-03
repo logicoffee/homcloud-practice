@@ -1,6 +1,5 @@
-from numpy import random, empty, append, column_stack, array
+from numpy import random, empty, append
 from clustering.clustering import clustering
-from clustering.approximate import approximate
 from matplotlib.pyplot import scatter, show
 
 
@@ -28,25 +27,11 @@ def mixed_2_normal(n):
 
 
 samples = mixed_2_normal(100)
-x = samples[:, 0]
-y = samples[:, 1]
-
-f = approximate(samples, 0.1)
-
-# f の値が大きい順に point_cloud と f をソート
-z = column_stack((samples, f))
-z = array(sorted(z, key=lambda x: x[-1], reverse=True))
-samples = z[:, :-1]
-f = z[:, -1]
-
-entries = clustering(samples, f, 1, 1)
-print(len(entries.entries))
-
+entries = clustering(samples, 1, 1)
 
 for entry in entries.entries:
-    points = samples[entry.point_indices]
-    x = points[:, 0]
-    y = points[:, 1]
+    x = entry.points[:, 0]
+    y = entry.points[:, 1]
     scatter(x, y)
 
 show()

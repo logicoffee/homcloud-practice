@@ -2,45 +2,50 @@ from numpy import array, append, empty, delete
 
 
 class Entry:
-    def __init__(self, point_index):
-        self.point_indices = array([point_index])
+    def __init__(self, index):
+        self.point_idxs = array([index])
 
-    def has(self, point_index):
-        return any(self.point_indices == point_index)
+    def has(self, point_idx):
+        return point_idx in self.point_idxs
 
-    def attach(self, point_index):
-        self.point_indices = append(self.point_indices, point_index)
+    def attach(self, point_idx):
+        self.point_idxs = append(self.point_idxs, point_idx)
         return self
 
     def merge(self, entry):
-        self.point_indices = append(self.point_indices, entry.point_indices)
+        self.point_idxs = append(self.point_idxs, entry.point_idxs)
         return self
 
-    def root_index(self):
-        return self.point_indices[0]
+    @property
+    def root_idx(self):
+        return self.point_idxs[0]
+
+    @property
+    def points(self):
+        return self.__points
+
+    @points.setter
+    def points(self, points):
+        self.__points = points
 
 
 class Entries:
     def __init__(self):
         self.entries = empty(0, dtype=Entry)
 
-    def find_entry_index_by_point(self, point_index):
+    def find_entry_idx_by_point(self, point_idx):
         for index, entry in enumerate(self.entries):
-            if entry.has(point_index):
+            if entry.has(point_idx):
                 return index
 
     def create(self, entry):
         self.entries = append(self.entries, entry)
 
-    def delete_entry(self, index):
-        self.entries = delete(self.entries, index)
+    def attach(self, entry_idx, point_idx):
+        self.entries[entry_idx] = self.entries[entry_idx].attach(point_idx)
 
-    def attach(self, index, point_index):
-        entry = self.entries[index]
-        self.entries[index] = entry.attach(point_index)
-
-    def merge(self, from_index, to_index):
-        from_entry = self.entries[from_index]
-        to_entry = self.entries[to_index]
-        self.entries[to_index] = to_entry.merge(from_entry)
-        self.delete_entry(from_index)
+    def merge(self, from_idx, to_idx):
+        from_entry = self.entries[from_idx]
+        to_entry = self.entries[to_idx]
+        self.entries[to_idx] = to_entry.merge(from_entry)
+        self.entries = delete(self.entries, from_idx)
